@@ -8,10 +8,10 @@ const chromeMV3Permissions = [
   "activeTab",
   "scripting",
   "declarativeNetRequest",
-  "action",
   "unlimitedStorage",
   "contextMenus",
   "tts",
+  "ttsEngine",
   "notifications"
 ]
 

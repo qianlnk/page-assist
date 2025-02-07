@@ -4,7 +4,7 @@ const storage = new Storage()
 
 const DEFAULT_TTS_PROVIDER = "browser"
 
-const AVAILABLE_TTS_PROVIDERS = ["browser", "elevenlabs"] as const
+const AVAILABLE_TTS_PROVIDERS = ["browser", "elevenlabs", "custom"] as const
 
 export const getTTSProvider = async (): Promise<
   (typeof AVAILABLE_TTS_PROVIDERS)[number]
@@ -98,9 +98,36 @@ export const getResponseSplitting = async () => {
   return data
 }
 
+export const getCustomTTSEndpoint = async () => {
+  const data = await storage.get("customTTSEndpoint")
+  return data
+}
+
+export const setCustomTTSEndpoint = async (endpoint: string) => {
+  await storage.set("customTTSEndpoint", endpoint)
+}
+
+export const getCustomTTSHeaders = async () => {
+  const data = await storage.get("customTTSHeaders")
+  if (!data) {
+    return {}
+  }
+  try {
+    return JSON.parse(data)
+  } catch {
+    return {}
+  }
+}
+
+export const setCustomTTSHeaders = async (headers: Record<string, string>) => {
+  await storage.set("customTTSHeaders", JSON.stringify(headers))
+}
+
 export const setResponseSplitting = async (responseSplitting: string) => {
   await storage.set("ttsResponseSplitting", responseSplitting)
 }
+
+
 
 export const getTTSSettings = async () => {
   const [
@@ -112,7 +139,9 @@ export const getTTSSettings = async () => {
     elevenLabsApiKey,
     elevenLabsVoiceId,
     elevenLabsModel,
-    responseSplitting
+    responseSplitting,
+    customTTSEndpoint,
+    customTTSHeaders
   ] = await Promise.all([
     isTTSEnabled(),
     getTTSProvider(),
@@ -122,7 +151,9 @@ export const getTTSSettings = async () => {
     getElevenLabsApiKey(),
     getElevenLabsVoiceId(),
     getElevenLabsModel(),
-    getResponseSplitting()
+    getResponseSplitting(),
+    getCustomTTSEndpoint(),
+    getCustomTTSHeaders()
   ])
 
   return {
@@ -134,7 +165,9 @@ export const getTTSSettings = async () => {
     elevenLabsApiKey,
     elevenLabsVoiceId,
     elevenLabsModel,
-    responseSplitting
+    responseSplitting,
+    customTTSEndpoint,
+    customTTSHeaders
   }
 }
 
@@ -146,7 +179,9 @@ export const setTTSSettings = async ({
   elevenLabsApiKey,
   elevenLabsVoiceId,
   elevenLabsModel,
-  responseSplitting
+  responseSplitting,
+  customTTSEndpoint,
+  customTTSHeaders
 }: {
   ttsEnabled: boolean
   ttsProvider: string
@@ -156,6 +191,8 @@ export const setTTSSettings = async ({
   elevenLabsVoiceId: string
   elevenLabsModel: string
   responseSplitting: string
+  customTTSEndpoint: string
+  customTTSHeaders: Record<string, string>
 }) => {
   await Promise.all([
     setTTSEnabled(ttsEnabled),
@@ -165,6 +202,8 @@ export const setTTSSettings = async ({
     setElevenLabsApiKey(elevenLabsApiKey),
     setElevenLabsVoiceId(elevenLabsVoiceId),
     setElevenLabsModel(elevenLabsModel),
-    setResponseSplitting(responseSplitting)
+    setResponseSplitting(responseSplitting),
+    setCustomTTSEndpoint(customTTSEndpoint),
+    setCustomTTSHeaders(customTTSHeaders)
   ])
 }

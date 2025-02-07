@@ -103,6 +103,10 @@ export const TTSModeSettings = ({ hideBorder }: { hideBorder?: boolean }) => {
                 {
                   label: "ElevenLabs",
                   value: "elevenlabs"
+                },
+                {
+                  label: "Custom TTS",
+                  value: "custom"
                 }
               ]}
               {...form.getInputProps("ttsProvider")}
@@ -126,6 +130,59 @@ export const TTSModeSettings = ({ hideBorder }: { hideBorder?: boolean }) => {
               />
             </div>
           </div>
+        )}
+        {form.values.ttsProvider === "custom" && (
+          <>
+            <div className="flex sm:flex-row flex-col space-y-4 sm:space-y-0 sm:justify-between">
+              <span className="text-gray-700 dark:text-neutral-50">
+                Endpoint URL
+              </span>
+              <Input
+                placeholder="https://your-tts-api-endpoint.com"
+                className=" mt-4 sm:mt-0 !w-[300px] sm:w-[200px]"
+                required
+                {...form.getInputProps("customTTSEndpoint")}
+              />
+            </div>
+            <div className="flex sm:flex-row flex-col space-y-4 sm:space-y-0 sm:justify-between">
+              <span className="text-gray-700 dark:text-neutral-50">
+                Headers (JSON)
+              </span>
+              <div className="flex flex-col w-full sm:w-[200px]">
+                <Input.TextArea
+                  placeholder='{"Authorization": "Bearer your-api-key","Content-Type": "application/json"}'
+                  className="mt-4 sm:mt-0"
+                  required
+                  {...form.getInputProps('customTTSHeaders')}
+                  onChange={(e) => {
+                    try {
+                      const value = e.target.value;
+                      if (value) {
+                        JSON.parse(value);
+                      }
+                      form.setFieldValue('customTTSHeaders', value);
+                    } catch (error) {
+                      message.error('请输入有效的JSON格式');
+                    }
+                  }}
+                  status={(() => {
+                    try {
+                      const value = form.values.customTTSHeaders;
+                      if (value) {
+                        JSON.parse(value);
+                      }
+                      return '';
+                    } catch (error) {
+                      return 'error';
+                    }
+                  })()}
+                />
+                <div className="text-xs text-gray-500 mt-1">
+                  请输入有效的JSON格式，例如: {"\"key\": \"value\""}
+                </div>
+              </div>
+            </div>
+          </>
         )}
         {form.values.ttsProvider === "elevenlabs" && (
           <>
