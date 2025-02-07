@@ -8,7 +8,9 @@ import {
   getVoice,
   isSSMLEnabled,
   getCustomTTSEndpoint,
-  getCustomTTSHeaders
+  getCustomTTSHeaders,
+  getCustomTTSModel,
+  getCustomTTSVoice
 } from "@/services/tts"
 import { markdownToSSML } from "@/utils/markdown-to-ssml"
 import { generateSpeech } from "@/services/elevenlabs"
@@ -109,8 +111,8 @@ export const useTTS = () => {
 
             const requestBody = {
               input: sentences[i],
-              model: "minimax_63",
-              voice: "minimax_63",
+              model: await getCustomTTSModel(),
+              voice: await getCustomTTSVoice(),
               speed: 1
             }
             console.log('Custom TTS Request:', {
@@ -178,7 +180,7 @@ export const useTTS = () => {
               await new Promise((resolve, reject) => {
                 audio.onended = () => {
                   URL.revokeObjectURL(url)
-                  resolve()
+                  resolve(void 0)
                 }
                 audio.onerror = (e) => {
                   URL.revokeObjectURL(url)

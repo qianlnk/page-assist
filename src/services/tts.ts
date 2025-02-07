@@ -127,6 +127,24 @@ export const setResponseSplitting = async (responseSplitting: string) => {
   await storage.set("ttsResponseSplitting", responseSplitting)
 }
 
+export const getCustomTTSModel = async () => {
+  const data = await storage.get("customTTSModel")
+  return data
+}
+
+export const setCustomTTSModel = async (model: string) => {
+  await storage.set("customTTSModel", model)
+}
+
+export const getCustomTTSVoice = async () => {
+  const data = await storage.get("customTTSVoice")
+  return data
+}
+
+export const setCustomTTSVoice = async (voice: string) => {
+  await storage.set("customTTSVoice", voice)
+}
+
 
 
 export const getTTSSettings = async () => {
@@ -141,6 +159,8 @@ export const getTTSSettings = async () => {
     elevenLabsModel,
     responseSplitting,
     customTTSEndpoint,
+    customTTSModel,
+    customTTSVoice,
     customTTSHeaders
   ] = await Promise.all([
     isTTSEnabled(),
@@ -153,6 +173,8 @@ export const getTTSSettings = async () => {
     getElevenLabsModel(),
     getResponseSplitting(),
     getCustomTTSEndpoint(),
+    getCustomTTSModel(),
+    getCustomTTSVoice(),
     getCustomTTSHeaders()
   ])
 
@@ -167,6 +189,8 @@ export const getTTSSettings = async () => {
     elevenLabsModel,
     responseSplitting,
     customTTSEndpoint,
+    customTTSModel,
+    customTTSVoice,
     customTTSHeaders
   }
 }
@@ -181,6 +205,8 @@ export const setTTSSettings = async ({
   elevenLabsModel,
   responseSplitting,
   customTTSEndpoint,
+  customTTSModel,
+  customTTSVoice,
   customTTSHeaders
 }: {
   ttsEnabled: boolean
@@ -192,6 +218,8 @@ export const setTTSSettings = async ({
   elevenLabsModel: string
   responseSplitting: string
   customTTSEndpoint: string
+  customTTSModel: string
+  customTTSVoice: string
   customTTSHeaders: Record<string, string>
 }) => {
   await Promise.all([
@@ -204,6 +232,8 @@ export const setTTSSettings = async ({
     setElevenLabsModel(elevenLabsModel),
     setResponseSplitting(responseSplitting),
     setCustomTTSEndpoint(customTTSEndpoint),
+    setCustomTTSModel(customTTSModel),
+    setCustomTTSVoice(customTTSVoice),
     setCustomTTSHeaders(customTTSHeaders)
   ])
 }

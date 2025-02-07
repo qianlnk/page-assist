@@ -146,6 +146,28 @@ export const TTSModeSettings = ({ hideBorder }: { hideBorder?: boolean }) => {
             </div>
             <div className="flex sm:flex-row flex-col space-y-4 sm:space-y-0 sm:justify-between">
               <span className="text-gray-700 dark:text-neutral-50">
+                Model
+              </span>
+              <Input
+                placeholder="Enter model name"
+                className=" mt-4 sm:mt-0 !w-[300px] sm:w-[200px]"
+                required
+                {...form.getInputProps("customTTSModel")}
+              />
+            </div>
+            <div className="flex sm:flex-row flex-col space-y-4 sm:space-y-0 sm:justify-between">
+              <span className="text-gray-700 dark:text-neutral-50">
+                Voice
+              </span>
+              <Input
+                placeholder="Enter voice name"
+                className=" mt-4 sm:mt-0 !w-[300px] sm:w-[200px]"
+                required
+                {...form.getInputProps("customTTSVoice")}
+              />
+            </div>
+            <div className="flex sm:flex-row flex-col space-y-4 sm:space-y-0 sm:justify-between">
+              <span className="text-gray-700 dark:text-neutral-50">
                 Headers (JSON)
               </span>
               <div className="flex flex-col w-full sm:w-[200px]">
